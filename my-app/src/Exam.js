@@ -1,23 +1,39 @@
 import axios from 'axios'
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
 
 export default function Exam() {
 
-    var apiUrl = `www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
-    //rejected
-    const [ex, setEx] = useState([]);
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
 
-    async function u(){
-        const response = axios.get(apiUrl);
-        console.log(response);
-        setEx(response.data);
+    const [q, setQ] = useState('');
+    const [a, setA] = useState([]);
+    const [checked, setChecked] = useState('');
+
+    useEffect(() => {
+        async function getQ(){
+            const response = await axios.get(apiUrl);
+            console.log(response.data.RESULT);
+            const example = response.data.RESULT[0];
+            setQ(example.question);
+            setA([example.answer01, example.answer02]);
+        }
+        getQ();
+    },[apiUrl]);
+
+    function handleCheck(e){
+        setChecked(e.target.value);
     }
+
     return(
         <div>
         <h2>검사 예시</h2>
-        <h3>직업과 관련된 두개의 가치 중에서 자기에게 더 중요한 가치에 표시하세요.</h3>
-        <button onClick={u}>불러</button>
-        <button>검사 시작</button>
+        <h3>{q}</h3>
+        <div>
+            <input type='radio' name='answer' value='0' onChange={handleCheck} />{a[0]}
+            <input type='radio' name='answer' value='1' onChange={handleCheck} />{a[1]}
+        </div>
+        <Link to='/test'><button disabled={!checked}>검사 시작</button></Link>
         </div>
     )
   }
