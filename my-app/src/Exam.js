@@ -3,8 +3,8 @@ import React,{useState} from 'react'
 
 export default function Exam() {
 
-    var apiUrl = `https://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=심리검사변수`
-    //왜 rejected 되는지
+    var apiUrl = `www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
+    //rejected
     const [ex, setEx] = useState([]);
 
     async function u(){
