@@ -1,0 +1,7 @@
+#question{
+    text-align: center;
+    width: 800px;
+    height: 60px;
+    border: solid 1px rgb(172, 170, 170);
+    background-color: #f1f0f0;
+}

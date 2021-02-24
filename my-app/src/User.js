@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import { Link } from 'react-router-dom';
+import {Button} from 'react-bootstrap';
 
 export default function User() {
 
@@ -22,7 +23,7 @@ export default function User() {
         <p>성별<br/>
         <input type='radio' name='gender' value='100323' onChange={genderSetting} />남성
         <input type='radio' name='gender' value='100324' onChange={genderSetting} />여성</p>
-        <Link to='/exam'><button disabled={!name || !gender}>검사 시작</button></Link>
+        <Link to='/example'><Button disabled={!name || !gender}>검사 시작</Button></Link>
         </div>
     )
 }
