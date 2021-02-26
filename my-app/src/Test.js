@@ -21,7 +21,7 @@ export default function Test() {
 
     const [questionList, setQuestionList] = useState([]);
     const [answers, setAnswers] = useState({id:'', answer:''});
-    const [page, setPage] = useState(-2);
+    const [page, setPage] = useState(0);
 
     const handleAnswer = e =>{
         setAnswers(state =>({...state, [e.target.name]: e.target.value}));
