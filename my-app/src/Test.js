@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {Button} from 'react-bootstrap';
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useMemo, useCallback} from 'react'
 import { Link } from 'react-router-dom';
 import './Test.css';
 
@@ -10,52 +10,75 @@ export default function Test() {
 
     const [questionList, setQuestionList] = useState([]);
     const [answer, setAnswerList] = useState({id:'', answer:''});
-    const [pageIndex, setPageIndex] = useState(0);
+    const [page, setPage] = useState(0);
+    const [check, setCheck] = useState(0);
 
     const handleAnswer = e =>{
-        setAnswerList(state =>({...state, [e.target.name]: e.target.value}))
+        setAnswerList(state =>({...state, [e.target.name]: e.target.value}));
+        setCheck(check+1);
       }
     
-    function handlePage() {
-        setPageIndex(pageIndex+5);
+    function handleNextPage(){
+        setPage(page+1)
     }
-    //문제를 5개씩 나누고 이동하는 부분 미완료
+
+    function handlePrevPage(){
+        setPage(page-1)
+    }
+
+    const fetchQuestions = useCallback(async () =>{
+        const response = await axios.get(apiUrl);
+        setQuestionList(response.data.RESULT);
+    }, [apiUrl])
 
     useEffect(() => {
-        axios
-          .get(apiUrl)
-          .then(response => {
-              console.log(response.data.RESULT);
-              setQuestionList(response.data.RESULT);
-          });
-      }, [apiUrl]);
+        fetchQuestions();
+      }, [fetchQuestions]);
     
-    if(questionList !== []){
-        const q = questionList.map(
-            (questionList) => (<div>
-                <div id="question">
+    const q = questionList.map(
+        (questionList) => (<div>
+            <div id="question">
                 <p>{questionList.question}</p>
                 <div>
-                    <input type='hidden' name='id' onChange={handleAnswer} value={questionList.qitemNo} />
-                    <input type='radio' name={questionList.qitemNo} value={questionList.answerScore01} onChange={handleAnswer} />{questionList.answer01}
-                    <input type='radio' name={questionList.qitemNo} value={questionList.answerScore02} onChange={handleAnswer} />{questionList.answer02}
+                    <input type='radio' name={`B${questionList.qitemNo}`} value={questionList.answerScore01}
+                     onChange={handleAnswer} />{questionList.answer01}
+                    <input type='radio' name={`B${questionList.qitemNo}`} value={questionList.answerScore02}
+                     onChange={handleAnswer} />{questionList.answer02}
                 </div>
-                </div>
-            </div>)
-        )
-
-        return(
-            <div>
-                검사시작
-                {q[pageIndex]}
-                {q[pageIndex+1]}
-                {q[pageIndex+2]}
-                {q[pageIndex+3]}
-                {q[pageIndex+4]}
-                <Button>이전</Button>
-                <Button onChange={handlePage}>다음</Button>
             </div>
-        )
-    }
+        </div>)
+    )
+
+    const visibleQuestion = useMemo(() => {
+        return q.slice(page*5,(page+1)*5)
+    },[page,q]);
+    console.log(answer);
+
+    // const isButtonDisabled = useMemo(() => {
+    //     let isDisabled = false;
+    //     visibleQuestion.forEach((question) => {
+    //       const index = parseInt(question.qitemNo, 10);
+    //       if (!answer[index - 1]) {
+    //         isDisabled = true;
+    //       }
+    //     });
+    //     return isDisabled;
+    //   }, [answer, visibleQuestion]);
+
+    return(
+        <div>
+            검사시작
+            {visibleQuestion}
+            {page ?
+            <Button onClick={handlePrevPage}>이전</Button>
+            : <Link to='/example'><Button onClick={handlePrevPage}>이전</Button></Link>}
+            {page === 5 ?
+              <Link to='/completion'>
+                  <Button onClick={handleNextPage}>완료</Button></Link>
+            :  <Button onClick={handleNextPage} >다음</Button>
+            }
+        </div>
+    )
+    
     
 }
