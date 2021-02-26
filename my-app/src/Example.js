@@ -31,8 +31,12 @@ export default function Example() {
         <h2>검사 예시</h2>
         <h3>{q}</h3>
         <div>
+            <label>
             <input type='radio' name='answer' value='1' onChange={handleCheck} />{a[0]}
+            </label>
+            <label>
             <input type='radio' name='answer' value='2' onChange={handleCheck} />{a[1]}
+            </label>
         </div>
         <Link to='/'><Button>이전</Button></Link>&nbsp;
         <Link to='/test'><Button disabled={!checked}>검사 시작</Button></Link>
