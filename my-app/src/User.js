@@ -1,8 +1,9 @@
 import axios from 'axios'
 import {Button} from 'react-bootstrap';
-import React,{useState, useEffect, useMemo, useCallback} from 'react'
+import React,{useState, useEffect, useMemo, useCallback, useContext} from 'react'
 import { Link } from 'react-router-dom';
 import './Test.css';
+import {UrlContext} from './Context'
 
 export default function User() {
     //이름 성별
@@ -30,8 +31,9 @@ export default function User() {
     const [questionList, setQuestionList] = useState([]);
     const [answers, setAnswers] = useState([]);
     const [page, setPage] = useState(-2);
+    const {url, setUrl} = useContext(UrlContext);
 
-    const handleAnswer = (e) => {
+    const handleAnswerChange = (e) => {
         let result = [...answers];
         result[e.target.name - 1] = e.target.value; 
         setAnswers(result); 
@@ -77,8 +79,9 @@ export default function User() {
         return isDisabled;
       }, [answers, visibleQuestion]);
 
-    const handleSubmit = e =>{
-        e.preventDefault();
+    
+
+    const handleSubmit = async e =>{
         var formatAnswers = "";
 
         for(var i =0;i<answers.length;i++){
@@ -97,15 +100,13 @@ export default function User() {
             "answers": formatAnswers
         }
         console.log(data);
-        
-        async function responseGet(){
-            const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
-            data, {headers: {'Content-Type': 'application/json'}});
-            console.log(response.data.RESULT);
+
+        const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
+        data, {headers: {'Content-Type': 'application/json'}});
+        console.log(response.data.RESULT);
+        setUrl(response.data.RESULT.url);
+        console.log('before'+url)
     }
-    responseGet();
-    }
-    //post로 데이터를 받아오기까지 성공했는데 받아온 것들을 넘겨주는 방법?(props? useParams?)
 
     return(
         <>
@@ -147,13 +148,13 @@ export default function User() {
                             <label>
                             <input type='radio' name={visibleQuestion.qitemNo}
                              value={visibleQuestion.answerScore01}
-                             onChange={handleAnswer}
+                             onChange={handleAnswerChange}
                              checked = {answers[visibleQuestion.qitemNo-1] === visibleQuestion.answerScore01 } />
                              {visibleQuestion.answer01}</label>
                             <label>
                             <input type='radio' name={visibleQuestion.qitemNo}
                              value={visibleQuestion.answerScore02}
-                             onChange={handleAnswer} 
+                             onChange={handleAnswerChange} 
                              checked = {answers[visibleQuestion.qitemNo-1] === visibleQuestion.answerScore02 }/>
                             {visibleQuestion.answer02}</label>
                         </div>

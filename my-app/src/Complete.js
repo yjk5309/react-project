@@ -1,8 +1,13 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Link, useParams } from 'react-router-dom';
 import {Button} from 'react-bootstrap';
+import {UrlContext} from './Context'
 
 export default function Complete() {
+
+    const {url, setUrl} = useContext(UrlContext);
+
+    console.log(url);
 
     return(
         <div>
