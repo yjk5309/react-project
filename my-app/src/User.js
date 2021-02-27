@@ -103,7 +103,7 @@ export default function User() {
 
         const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
         data, {headers: {'Content-Type': 'application/json'}});
-        console.log(response.data.RESULT);
+        console.log(response.data.RESULT.url);
         setUrl(response.data.RESULT.url);
         console.log('before'+url)
     }
