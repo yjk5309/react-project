@@ -10,11 +10,11 @@ export default function User() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
 
-    function nameSetting(e){
+    function handleName(e){
         setName(e.target.value);
     }
 
-    function genderSetting(e){
+    function handleGender(e){
         setGender(e.target.value);
     }
 
@@ -25,7 +25,8 @@ export default function User() {
         setChecked(e.target.value);
     }
 
-    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
+    const apiKey = process.env.REACT_APP_API_KEY;
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=${apiKey}&q=6`
 
     //검사 진행
     const [questionList, setQuestionList] = useState([]);
@@ -91,7 +92,7 @@ export default function User() {
         console.log(formatAnswers);
         var timestamp = new Date().getTime();
         var data = { 
-            "apikey": "0ae61054823ff25204fc658195732555",
+            "apikey": apiKey,
             "qestrnSeq": "6", //검사번호
             "trgetSe": "100209", //일반인
             "name": name,
@@ -103,9 +104,8 @@ export default function User() {
 
         const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
         data, {headers: {'Content-Type': 'application/json'}});
-        console.log(response.data.RESULT.url);
-        setUrl(response.data.RESULT.url);
-        console.log('before'+url)
+        console.log(response.data.RESULT.url.split('=')[1]);
+        setUrl(response.data.RESULT.url.split('=')[1]);
     }
 
     return(
@@ -115,10 +115,10 @@ export default function User() {
             <div>
                 <h2>직업 가치관 검사</h2>
                 <p>이름<br/>
-                <input type='text' name='name' required onChange={nameSetting} /></p>
+                <input type='text' name='name' required onChange={handleName} /></p>
                 <p>성별<br/>
-                <input type='radio' name='gender' value='100323' onChange={genderSetting} />남성
-                <input type='radio' name='gender' value='100324' onChange={genderSetting} />여성</p>
+                <input type='radio' name='gender' value='100323' onChange={handleGender} />남성
+                <input type='radio' name='gender' value='100324' onChange={handleGender} />여성</p>
                 <Button disabled={!name || !gender} onClick={handleNextPage}>검사 시작</Button>
             </div>}
             {page === -1 &&

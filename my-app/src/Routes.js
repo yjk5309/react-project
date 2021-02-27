@@ -9,6 +9,7 @@ import {Container} from 'react-bootstrap';
 
 import User from './User';
 import Complete from './Complete';
+import Result from './Result';
 import {UrlContext} from './Context'
 
 function Routes() {
@@ -19,10 +20,17 @@ function Routes() {
     <Container>
       <Router>
         <Switch>
-          <Route exact path="/" exact component={User} />
-          <Route exact path="/completion">
+          <Route exact path="/">
             <UrlContext.Provider value={urlValue}>
-              <Complete />
+              <User/>
+            </UrlContext.Provider>
+          </Route>
+          <Route exact path="/completion">
+            <Complete />
+          </Route>
+          <Route exact path="/result">
+            <UrlContext.Provider value={urlValue}>
+              <Result />
             </UrlContext.Provider>
           </Route>
         </Switch>
