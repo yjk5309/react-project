@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {Button} from 'react-bootstrap';
 import React,{useState, useEffect, useMemo, useCallback, useContext} from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './Test.css';
 import {UrlContext} from './Context'
 
@@ -33,6 +33,7 @@ export default function User() {
     const [answers, setAnswers] = useState([]);
     const [page, setPage] = useState(-2);
     const {url, setUrl} = useContext(UrlContext);
+    const history = useHistory();
 
     const handleAnswerChange = (e) => {
         let result = [...answers];
@@ -106,6 +107,9 @@ export default function User() {
         data, {headers: {'Content-Type': 'application/json'}});
         console.log(response.data.RESULT.url.split('=')[1]);
         setUrl(response.data.RESULT.url.split('=')[1]);
+        const seq = response.data.RESULT.url.split('=')[1]
+
+        history.push('/completion/'+seq)
     }
 
     return(

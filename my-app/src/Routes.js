@@ -25,10 +25,10 @@ function Routes() {
               <User/>
             </UrlContext.Provider>
           </Route>
-          <Route exact path="/completion">
+          <Route exact path="/completion/:seq">
             <Complete />
           </Route>
-          <Route exact path="/result">
+          <Route exact path="/result/:seq">
             <UrlContext.Provider value={urlValue}>
               <Result />
             </UrlContext.Provider>
