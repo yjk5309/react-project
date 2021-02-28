@@ -14,7 +14,8 @@ export default function Result() {
 
     const [user, setUser] = useState({});
     const [score, setScore] = useState('');
-    const [sort, setSort] = useState('');
+    const [firstScore, setFirstScore] = useState('');
+    const [secondScore, setSecondScore] = useState('');
 
     const fetchResults = useCallback(async () => {
         const response = await axios.get(apiUrl);
@@ -22,19 +23,23 @@ export default function Result() {
         setUser(response.data.user);
         setScore(response.data.result.wonScore);
 
+        const splitScore = score.split(' ');
+
         var eachScore = [];
         for(var i=0;i<splitScore.length-1;i++){
             eachScore.push(splitScore[i].substr(2,3));
         };
         console.log(eachScore);
 
+        let sorts = eachScore.sort((a,b) => b - a);
+        console.log(sorts)
+        
+
     }, [apiUrl])
     
     useEffect(() => {
         fetchResults();
     }, [fetchResults]);
-
-    const splitScore = score.split(' ');
 
     return (
         <div>
