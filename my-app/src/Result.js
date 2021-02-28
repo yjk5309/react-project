@@ -32,8 +32,10 @@ export default function Result() {
         console.log(eachScore);
 
         let sorts = eachScore.sort((a,b) => b - a);
-        console.log(sorts)
-        
+        console.log(sorts);
+        setFirstScore(sorts[0]);
+        setSecondScore(sorts[1]);
+
 
     }, [apiUrl])
     
