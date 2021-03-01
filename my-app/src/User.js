@@ -1,19 +1,20 @@
 import axios from 'axios'
 import {Button} from 'react-bootstrap';
-import React,{useState, useEffect, useMemo, useCallback} from 'react'
-import { Link } from 'react-router-dom';
+import React,{useState, useEffect, useMemo, useCallback, useContext} from 'react'
+import { Link, useHistory } from 'react-router-dom';
 import './Test.css';
+import {UrlContext} from './Context'
 
 export default function User() {
     //이름 성별
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
 
-    function nameSetting(e){
+    function handleNameChange(e){
         setName(e.target.value);
     }
 
-    function genderSetting(e){
+    function handleGender(e){
         setGender(e.target.value);
     }
 
@@ -24,14 +25,17 @@ export default function User() {
         setChecked(e.target.value);
     }
 
-    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
+    const apiKey = process.env.REACT_APP_API_KEY;
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=${apiKey}&q=6`
 
     //검사 진행
     const [questionList, setQuestionList] = useState([]);
     const [answers, setAnswers] = useState([]);
     const [page, setPage] = useState(-2);
+    const {url, setUrl} = useContext(UrlContext);
+    const history = useHistory();
 
-    const handleAnswer = (e) => {
+    const handleAnswerChange = (e) => {
         let result = [...answers];
         result[e.target.name - 1] = e.target.value; 
         setAnswers(result); 
@@ -77,8 +81,9 @@ export default function User() {
         return isDisabled;
       }, [answers, visibleQuestion]);
 
-    const handleSubmit = e =>{
-        e.preventDefault();
+    
+
+    const handleSubmit = async e =>{
         var formatAnswers = "";
 
         for(var i =0;i<answers.length;i++){
@@ -88,7 +93,7 @@ export default function User() {
         console.log(formatAnswers);
         var timestamp = new Date().getTime();
         var data = { 
-            "apikey": "0ae61054823ff25204fc658195732555",
+            "apikey": apiKey,
             "qestrnSeq": "6", //검사번호
             "trgetSe": "100209", //일반인
             "name": name,
@@ -97,15 +102,15 @@ export default function User() {
             "answers": formatAnswers
         }
         console.log(data);
-        
-        async function responseGet(){
-            const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
-            data, {headers: {'Content-Type': 'application/json'}});
-            console.log(response.data.RESULT);
+
+        const response = await axios.post(`http://www.career.go.kr/inspct/openapi/test/report`, 
+        data, {headers: {'Content-Type': 'application/json'}});
+        console.log(response.data.RESULT.url.split('=')[1]);
+        setUrl(response.data.RESULT.url.split('=')[1]);
+        const seq = response.data.RESULT.url.split('=')[1]
+
+        history.push('/completion/'+seq)
     }
-    responseGet();
-    }
-    //post로 데이터를 받아오기까지 성공했는데 받아온 것들을 넘겨주는 방법?(props? useParams?)
 
     return(
         <>
@@ -114,10 +119,10 @@ export default function User() {
             <div>
                 <h2>직업 가치관 검사</h2>
                 <p>이름<br/>
-                <input type='text' name='name' required onChange={nameSetting} /></p>
+                <input type='text' name='name' required onChange={handleNameChange} /></p>
                 <p>성별<br/>
-                <input type='radio' name='gender' value='100323' onChange={genderSetting} />남성
-                <input type='radio' name='gender' value='100324' onChange={genderSetting} />여성</p>
+                <input type='radio' name='gender' value='100323' onChange={handleGender} />남성
+                <input type='radio' name='gender' value='100324' onChange={handleGender} />여성</p>
                 <Button disabled={!name || !gender} onClick={handleNextPage}>검사 시작</Button>
             </div>}
             {page === -1 &&
@@ -147,13 +152,13 @@ export default function User() {
                             <label>
                             <input type='radio' name={visibleQuestion.qitemNo}
                              value={visibleQuestion.answerScore01}
-                             onChange={handleAnswer}
+                             onChange={handleAnswerChange}
                              checked = {answers[visibleQuestion.qitemNo-1] === visibleQuestion.answerScore01 } />
                              {visibleQuestion.answer01}</label>
                             <label>
                             <input type='radio' name={visibleQuestion.qitemNo}
                              value={visibleQuestion.answerScore02}
-                             onChange={handleAnswer} 
+                             onChange={handleAnswerChange} 
                              checked = {answers[visibleQuestion.qitemNo-1] === visibleQuestion.answerScore02 }/>
                             {visibleQuestion.answer02}</label>
                         </div>

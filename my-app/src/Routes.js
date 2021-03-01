@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,25 +8,35 @@ import {
 import {Container} from 'react-bootstrap';
 
 import User from './User';
-// import Example from './Example';
-// import Test from './Test';
 import Complete from './Complete';
+import Result from './Result';
+import {UrlContext} from './Context'
 
-class Routes extends React.Component {
-  render() {
+function Routes() {
+    const [url, setUrl] = useState('');
+    const urlValue = {url, setUrl};
+
     return (
     <Container>
       <Router>
         <Switch>
-          <Route exact path="/" exact component={User} />
-	      {/* <Route exact path="/example" component={Example} />
-          <Route exact path="/test" component={Test} /> */}
-          <Route exact path="/completion" component={Complete} />
+          <Route exact path="/">
+            <UrlContext.Provider value={urlValue}>
+              <User/>
+            </UrlContext.Provider>
+          </Route>
+          <Route exact path="/completion/:seq">
+            <Complete />
+          </Route>
+          <Route exact path="/result/:seq">
+            <UrlContext.Provider value={urlValue}>
+              <Result />
+            </UrlContext.Provider>
+          </Route>
         </Switch>
       </Router>
     </Container>
     )
   }
-}
 
 export default Routes;
