@@ -10,7 +10,7 @@ export default function User() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
 
-    function handleName(e){
+    function handleNameChange(e){
         setName(e.target.value);
     }
 
@@ -119,7 +119,7 @@ export default function User() {
             <div>
                 <h2>직업 가치관 검사</h2>
                 <p>이름<br/>
-                <input type='text' name='name' required onChange={handleName} /></p>
+                <input type='text' name='name' required onChange={handleNameChange} /></p>
                 <p>성별<br/>
                 <input type='radio' name='gender' value='100323' onChange={handleGender} />남성
                 <input type='radio' name='gender' value='100324' onChange={handleGender} />여성</p>
