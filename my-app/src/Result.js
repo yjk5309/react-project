@@ -98,10 +98,9 @@ export default function Result() {
             </p>
             <p>
                 성별: {user.sexdstn === 100324 ? '여성' : '남성'}
-                {/* 왜 grade안에 들어가있는지 모르겠습니다.. */}
             </p>
             <p>
-                검사일: {user.registDt.split('T')[0]}
+                검사일: {user.registDt}
             </p>
             <h3>직업 가치관 결과</h3>
             <RadarChart cx={300} cy={250} outerRadius={150} width={500} height={500} data={data}>
