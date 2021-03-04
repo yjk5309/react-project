@@ -67,9 +67,14 @@ export default function Result() {
         let sorts = eachScore2.sort((a,b) => b - a);
         console.log(sorts);
         let firstScoreIndex = eachScore.indexOf(sorts[0]);
-        let secondScoreIndex = eachScore.indexOf(sorts[1]);
         setFirstScore(firstScoreIndex+1);
-        setSecondScore(secondScoreIndex+1);
+        if(sorts[0] === sorts[1]){
+          let secondScoreIndex = eachScore.indexOf(sorts[1],firstScoreIndex+1); // 같은 값일 경우 해결
+          setSecondScore(secondScoreIndex+1);
+        }else{
+          let secondScoreIndex = eachScore.indexOf(sorts[1]);
+          setSecondScore(secondScoreIndex+1);
+        }
 
     }, [apiUrl, firstScore, score, secondScore]) //deps 추가로 해결
     
@@ -77,28 +82,256 @@ export default function Result() {
         fetchResults();
     }, [fetchResults]);
 
-    const [jabs, setJabs] = useState([]);
+    const [jobs, setJobs] = useState([]);
     const [majors, setMajors] = useState([]);
 
-    const fetchJabs = useCallback(async () => {
-      var jabUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${firstScore}&no2=${secondScore}`
+    const fetchJobsMajors = useCallback(async () => {
+      var jobUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${firstScore}&no2=${secondScore}`
       var majorUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/majors?no1=${firstScore}&no2=${secondScore}`
 
-      // const careers = ['중졸이하','고졸','전문대졸','대졸','대학원졸'];
-      // const majors = ['계열무관','인문','사회','교육','공학','자연','의학','예체능'];
-
-      const jabResponse = await axios.get(jabUrl);
-      console.log(jabResponse.data);
-      setJabs(jabResponse.data);
+      const jobResponse = await axios.get(jobUrl);
+      console.log(jobResponse.data);
+      setJobs(jobResponse.data);
 
       const majorResponse = await axios.get(majorUrl);
+      console.log(majorResponse.data);
       setMajors(majorResponse.data);
 
-    }, [firstScore, secondScore]) //deps 추가로 해결
+    }, [firstScore, secondScore])
     
     useEffect(() => {
-      fetchJabs();
-    }, [fetchJabs]);
+      fetchJobsMajors();
+    }, [fetchJobsMajors]);
+
+    function showJob(){
+      // const careers = ['중졸이하','고졸','전문대졸','대졸','대학원졸']; //1부터
+      let middle = [];
+      let high = [];
+      let tech = [];
+      let college = [];
+      let finish = [];
+      for(var i=0;i<jobs.length;i++){
+        if(jobs[i][2] === 1){
+          middle.push(jobs[i]);
+        }else if(jobs[i][2] === 2){
+          high.push(jobs[i])
+        }
+        else if(jobs[i][2] === 3){
+          tech.push(jobs[i])
+        }
+        else if(jobs[i][2] === 4){
+          college.push(jobs[i])
+        }
+        else if(jobs[i][2] === 5){
+          finish.push(jobs[i])
+        }
+      }
+      return (
+        <div>
+
+        <tr>
+          <td>중졸</td>
+          <td>
+        {middle.map(
+          (item) => (<div>
+              <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                {item[1]}</a>
+          </div>)
+      )}
+      </td>
+      </tr>
+        
+        <tr>
+          <td>고졸</td>
+          <td>
+        {high.map(
+          (item) => (<div>
+              <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                {item[1]}</a>
+          </div>)
+      )}
+      </td>
+      </tr>
+
+      <tr>
+          <td>전문대졸</td>
+          <td>
+        {tech.map(
+          (item) => (<div>
+              <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                {item[1]}</a>
+          </div>)
+      )}
+      </td>
+      </tr>
+
+      <tr>
+          <td>대졸</td>
+          <td>
+        {college.map(
+          (item) => (<div>
+              <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                {item[1]}</a>
+          </div>)
+      )}
+      </td>
+      </tr>
+
+      <tr>
+          <td>대학원졸</td>
+          <td>
+        {finish.map(
+          (item) => (<div>
+              <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                {item[1]}</a>
+          </div>)
+      )}
+      </td>
+      </tr>
+
+      </div>
+      )
+    }
+
+    function showMajor() {
+      // const majors = ['계열무관','인문','사회','교육','공학','자연','의학','예체능']; //0부터
+      let irrelevant = [];
+      let humanity = [];
+      let social = [];
+      let education = [];
+      let engineer = [];
+      let nature = [];
+      let medicine = [];
+      let artAndSport = [];
+      for(var i=0;i<majors.length;i++){
+        if(majors[i][2] === 0){
+          irrelevant.push(majors[i]);
+        }else if(majors[i][2] === 1){
+          humanity.push(majors[i])
+        }
+        else if(majors[i][2] === 2){
+          social.push(majors[i])
+        }
+        else if(majors[i][2] === 3){
+          education.push(majors[i])
+        }
+        else if(majors[i][2] === 4){
+          engineer.push(majors[i])
+        }
+        else if(majors[i][2] === 5){
+          nature.push(majors[i])
+        }
+        else if(majors[i][2] === 6){
+          medicine.push(majors[i])
+        }
+        else if(majors[i][2] === 7){
+          artAndSport.push(majors[i])
+        }
+      }
+
+      return(
+        <div>
+
+          <tr>
+            <td>계열무관</td>
+            <td>
+            {irrelevant.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>인문</td>
+            <td>
+            {humanity.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>사회</td>
+            <td>
+            {social.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>교육</td>
+            <td>
+            {education.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>공학</td>
+            <td>
+            {engineer.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>자연</td>
+            <td>
+            {nature.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>의학</td>
+            <td>
+            {medicine.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+          <tr>
+            <td>예체능</td>
+            <td>
+            {artAndSport.map(
+              (item) => (<div>
+                  <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
+                    {item[1]}</a>
+              </div>)
+          )}
+          </td>
+          </tr>
+
+        </div>
+      )
+      
+    }
 
     return (
         <div>
@@ -125,14 +358,9 @@ export default function Result() {
             </RadarChart>
             <h3>가치관과 관련이 높은 직업</h3>
             <h4>종사자 평균 학력별</h4>
-            {jabs.map(
-                (jabs) => (<div>
-                    <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${jabs[0]}`}>
-                      {jabs[1]}</a>
-                </div>)
-            )
-                }
+            {showJob()}
             <h4>종사자 평균 전공별</h4>
+            {showMajor()}
             <Link to='/'><Button>다시 검사하기</Button></Link>
         </div>
     )

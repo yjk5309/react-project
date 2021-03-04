@@ -11,7 +11,12 @@ export default function User() {
     const [gender, setGender] = useState('');
 
     function handleNameChange(e){
-        setName(e.target.value);
+        const regex = /^[ㄱ-ㅎ|가-힣|]+$/;
+        if(regex.test(e.target.value)){
+            setName(e.target.value);
+        }else{
+            alert("정확한 이름을 입력해주세요")
+        }
     }
 
     function handleGender(e){
