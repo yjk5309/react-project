@@ -19,7 +19,7 @@ export default function Result() {
     const [score, setScore] = useState('');
     const [firstScore, setFirstScore] = useState('');
     const [secondScore, setSecondScore] = useState('');
-    const [data, setDate] =useState();
+    const [data, setData] =useState(null);
 
     const fetchResults = useCallback(async () => {
         const response = await axios.get(apiUrl);
@@ -31,7 +31,7 @@ export default function Result() {
 
         var eachScore = [];
         for(var i=0;i<splitScore.length-1;i++){
-            eachScore.push(splitScore[i].substr(2,3));
+            eachScore.push(parseInt(splitScore[i].substr(2,3),10));
         };
         console.log(eachScore);
 
@@ -61,7 +61,7 @@ export default function Result() {
                 subject: '창의성', A: eachScore[7], B: 85, fullMark: 7,
             },
           ];
-        setDate(data);
+        setData(data);
 
         let eachScore2 = eachScore.slice(); //배열 깊은 복사같은 얕은 복사
         let sorts = eachScore2.sort((a,b) => b - a);
@@ -71,20 +71,34 @@ export default function Result() {
         setFirstScore(firstScoreIndex+1);
         setSecondScore(secondScoreIndex+1);
 
-        var jabUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${firstScore}&no2=${secondScore}`
-        var majorUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/majors?no1=${firstScore}&no2=${secondScore}`
-
-        const jabResponse = await axios.get(jabUrl);
-        console.log(jabResponse);
-
-        const majorResponse = await axios.get(majorUrl);
-        console.log(majorResponse);
-
-    }, [apiUrl])
+    }, [apiUrl, firstScore, score, secondScore]) //deps 추가로 해결
     
     useEffect(() => {
         fetchResults();
     }, [fetchResults]);
+
+    const [jabs, setJabs] = useState([]);
+    const [majors, setMajors] = useState([]);
+
+    const fetchJabs = useCallback(async () => {
+      var jabUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${firstScore}&no2=${secondScore}`
+      var majorUrl = `https://inspct.career.go.kr/inspct/api/psycho/value/majors?no1=${firstScore}&no2=${secondScore}`
+
+      // const careers = ['중졸이하','고졸','전문대졸','대졸','대학원졸'];
+      // const majors = ['계열무관','인문','사회','교육','공학','자연','의학','예체능'];
+
+      const jabResponse = await axios.get(jabUrl);
+      console.log(jabResponse.data);
+      setJabs(jabResponse.data);
+
+      const majorResponse = await axios.get(majorUrl);
+      setMajors(majorResponse.data);
+
+    }, [firstScore, secondScore]) //deps 추가로 해결
+    
+    useEffect(() => {
+      fetchJabs();
+    }, [fetchJabs]);
 
     return (
         <div>
@@ -111,8 +125,15 @@ export default function Result() {
             </RadarChart>
             <h3>가치관과 관련이 높은 직업</h3>
             <h4>종사자 평균 학력별</h4>
+            {jabs.map(
+                (jabs) => (<div>
+                    <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${jabs[0]}`}>
+                      {jabs[1]}</a>
+                </div>)
+            )
+                }
             <h4>종사자 평균 전공별</h4>
-            <Link><Button>다시 검사하기</Button></Link>
+            <Link to='/'><Button>다시 검사하기</Button></Link>
         </div>
     )
 }
