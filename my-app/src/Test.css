@@ -1,3 +1,27 @@
+.container{
+    margin: auto;
+    align-content: center;
+    text-align: center;
+}
+
+.div{
+    margin-left: 150px;
+}
+
+.div_chart{
+    margin-left: 250px;
+}
+
+.div_table{
+    margin-left: 90px;
+}
+
+.button{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
 #question{
     text-align: center;
     width: 800px;
@@ -6,4 +30,23 @@
     background-color: #f1f0f0;
     margin-bottom: 30px;
     padding: 20px;
+}
+
+.title_td{
+    width: 100px;
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+}
+.content_td{
+    width: 800px;
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+}
+
+.share{
+    border: solid 1px rgb(150, 188, 226);
+    background-color: #caecec;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px;
 }
