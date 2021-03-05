@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import {Container} from 'react-bootstrap';
+import './Test.css';
 
 import User from './User';
 import Complete from './Complete';
@@ -17,7 +18,7 @@ function Routes() {
     const urlValue = {url, setUrl};
 
     return (
-    <Container>
+    <Container className="container">
       <Router>
         <Switch>
           <Route exact path="/">

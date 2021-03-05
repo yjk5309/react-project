@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Button} from 'react-bootstrap';
+import {Button, ProgressBar} from 'react-bootstrap';
 import React,{useState, useEffect, useMemo, useCallback, useContext} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import './Test.css';
@@ -11,12 +11,7 @@ export default function User() {
     const [gender, setGender] = useState('');
 
     function handleNameChange(e){
-        const regex = /^[ㄱ-ㅎ|가-힣|]+$/;
-        if(regex.test(e.target.value)){
-            setName(e.target.value);
-        }else{
-            alert("정확한 이름을 입력해주세요")
-        }
+        setName(e.target.value);
     }
 
     function handleGender(e){
@@ -39,11 +34,17 @@ export default function User() {
     const [page, setPage] = useState(-2);
     const {url, setUrl} = useContext(UrlContext);
     const history = useHistory();
+    const [now, setNow] = useState(0);
 
     const handleAnswerChange = (e) => {
         let result = [...answers];
-        result[e.target.name - 1] = e.target.value; 
-        setAnswers(result); 
+        result[e.target.name - 1] = e.target.value;
+        setAnswers(result);
+        if((result.length !== answers.length) && (answers.length <= 11)){
+            setNow(now+3);
+        }else if((result.length !== answers.length) && (answers.length > 11)){
+            setNow(now+4);
+        }
       };
 
     const fetchQuestions = useCallback(async () =>{
@@ -117,6 +118,8 @@ export default function User() {
         history.push('/completion/'+seq)
     }
 
+    const progressInstance = <ProgressBar now={now} label={`${now}%`} />
+
     return(
         <>
         <div>
@@ -133,7 +136,10 @@ export default function User() {
             {page === -1 &&
              <div>
              <h2>검사 예시</h2>
-             <h4>{exampleQuestion.question}</h4>
+             {progressInstance}
+             <br />
+             <div className="div" id="question">
+             <h5>{exampleQuestion.question}</h5>
             <div>
                 <label>
                 <input type='radio' name='answer' value='1' onChange={handleCheck} />{exampleQuestion.answer01}
@@ -142,15 +148,18 @@ export default function User() {
                 <input type='radio' name='answer' value='2' onChange={handleCheck} />{exampleQuestion.answer02}
                 </label>
             </div>
-             <Button onClick={handlePrevPage}>이전</Button>
+            </div>
+             <Button onClick={handlePrevPage}>이전</Button>&nbsp;
              <Button onClick={handleNextPage} disabled={!checked}>다음</Button>
              </div>
             }
             {page >= 0 &&
             <div>
             <h2>검사 진행</h2>
+            {progressInstance}
+            <br />
             {visibleQuestion.map(
-                (visibleQuestion) => (<div>
+                (visibleQuestion) => (<div className="div">
                     <div id="question">
                         <p>{visibleQuestion.question}</p>
                         <div>
@@ -171,12 +180,14 @@ export default function User() {
                 </div>)
             )
             }
+            <div className="button">
             <Button onClick={handlePrevPage}>이전</Button>
             {page === 5 ?
               <Link to='/completion'>
                   <Button onClick={handleSubmit} disabled={isButtonDisabled}>완료</Button></Link>
             :  <Button onClick={handleNextPage} disabled={isButtonDisabled}>다음</Button>
             }
+            </div>
             </div>
         }
             

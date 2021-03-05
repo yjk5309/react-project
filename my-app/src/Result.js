@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import {
     Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   } from 'recharts';
+import './Test.css';
 
 export default function Result() {
 
@@ -128,63 +129,66 @@ export default function Result() {
       }
       return (
         <div>
-
         <tr>
-          <td>중졸</td>
-          <td>
+          <td className="title_td">학력</td>
+          <td className="content_td">직업</td>
+        </tr>
+        <tr>
+          <td className="title_td">중졸</td>
+          <td className="content_td">
         {middle.map(
-          (item) => (<div>
+          (item) => (
               <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                {item[1]}</a>
-          </div>)
+                {item[1]}&nbsp;</a>
+          )
       )}
       </td>
       </tr>
         
         <tr>
-          <td>고졸</td>
-          <td>
+          <td className="title_td">고졸</td>
+          <td className="content_td">
         {high.map(
-          (item) => (<div>
+          (item) => (
               <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                {item[1]}</a>
-          </div>)
+                {item[1]}&nbsp;</a>
+          )
       )}
       </td>
       </tr>
 
       <tr>
-          <td>전문대졸</td>
-          <td>
+          <td className="title_td">전문대졸</td>
+          <td className="content_td">
         {tech.map(
-          (item) => (<div>
+          (item) => (
               <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                {item[1]}</a>
-          </div>)
+                {item[1]}&nbsp;</a>
+         )
       )}
       </td>
       </tr>
 
       <tr>
-          <td>대졸</td>
-          <td>
+          <td className="title_td">대졸</td>
+          <td className="content_td">
         {college.map(
-          (item) => (<div>
+          (item) => (
               <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                {item[1]}</a>
-          </div>)
+                {item[1]}&nbsp;</a>
+          )
       )}
       </td>
       </tr>
 
       <tr>
-          <td>대학원졸</td>
-          <td>
+          <td className="title_td">대학원졸</td>
+          <td className="content_td">
         {finish.map(
-          (item) => (<div>
+          (item) => (
               <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                {item[1]}</a>
-          </div>)
+                {item[1]}&nbsp;</a>
+          )
       )}
       </td>
       </tr>
@@ -231,99 +235,102 @@ export default function Result() {
 
       return(
         <div>
-
           <tr>
-            <td>계열무관</td>
-            <td>
+            <td className="title_td">전공</td>
+            <td className="content_td">직업</td>
+          </tr>
+          <tr>
+            <td className="title_td">계열무관</td>
+            <td className="content_td">
             {irrelevant.map(
-              (item) => (<div>
+              (item => {
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              })
           )}
           </td>
           </tr>
 
           <tr>
-            <td>인문</td>
-            <td>
+            <td className="title_td">인문</td>
+            <td className="content_td">
             {humanity.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a> 
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>사회</td>
-            <td>
+            <td className="title_td">사회</td>
+            <td className="content_td">
             {social.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>교육</td>
-            <td>
+            <td className="title_td">교육</td>
+            <td className="content_td">
             {education.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>공학</td>
-            <td>
+            <td className="title_td">공학</td>
+            <td className="content_td">
             {engineer.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>자연</td>
-            <td>
+            <td className="title_td">자연</td>
+            <td className="content_td">
             {nature.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>의학</td>
-            <td>
+            <td className="title_td">의학</td>
+            <td className="content_td">
             {medicine.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
 
           <tr>
-            <td>예체능</td>
-            <td>
+            <td className="title_td">예체능</td>
+            <td className="content_td">
             {artAndSport.map(
-              (item) => (<div>
+              (item) => (
                   <a href ={ `http://www.career.go.kr/cnet/front/base/job/jobView.do?SEQ=${item[0]}`}>
-                    {item[1]}</a>
-              </div>)
+                    {item[1]}&nbsp;</a>
+              )
           )}
           </td>
           </tr>
@@ -333,12 +340,19 @@ export default function Result() {
       
     }
 
+    const [share, setShare] = useState(false);
+    let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    
+    function handleUrl(){
+      setShare(true);
+    }
+
     return (
         <div>
             <h2>직업 가치관 검사 결과표</h2>
-            <p>직업가치관이란 직업을 선택할 때 영향을 끼치는 자신만의 믿음과 신념입니다. 
-                따라서 여러분의 직업생활과 관련하여 포기하지 않는 무게중심의 역할을 한다고 볼 수 있습니다. 
-                직업가치관검사는 여러분이 직업을 선택할 때 상대적으로 어떠한 가치를 중요하게 생각하는지를 알려줍니다. 
+            <p>직업가치관이란 직업을 선택할 때 영향을 끼치는 자신만의 믿음과 신념입니다. <br />
+                따라서 여러분의 직업생활과 관련하여 포기하지 않는 무게중심의 역할을 한다고 볼 수 있습니다. <br />
+                직업가치관검사는 여러분이 직업을 선택할 때 상대적으로 어떠한 가치를 중요하게 생각하는지를 알려줍니다. <br />
                 또한 본인이 가장 중요하게 생각하는 가치를 충족시켜줄 수 있는 직업에 대해 생각해 볼 기회를 제공합니다.</p>
             <p>
                 이름: {user.nm}
@@ -349,19 +363,36 @@ export default function Result() {
             <p>
                 검사일: {user.registDt}
             </p>
+            <hr/>
             <h3>직업 가치관 결과</h3>
+            <div className='div_chart'>
             <RadarChart cx={300} cy={250} outerRadius={150} width={500} height={500} data={data}>
                 <PolarGrid />
                 <PolarAngleAxis dataKey="subject" />
                 <PolarRadiusAxis />
                 <Radar name="result" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
             </RadarChart>
+            </div>
+            <hr/>
             <h3>가치관과 관련이 높은 직업</h3>
             <h4>종사자 평균 학력별</h4>
+            <div className="div_table">
             {showJob()}
+            </div>
+            <br/>
+            <br/>
             <h4>종사자 평균 전공별</h4>
+            <div className="div_table">
             {showMajor()}
-            <Link to='/'><Button>다시 검사하기</Button></Link>
+            </div>
+            <br />
+            <Link to='/'><Button>다시 검사하기</Button></Link>&nbsp;
+            <Button onClick={handleUrl}>공유하기</Button>
+            {share === true &&
+              <div className="share">
+              <p>url을 복사해서 공유해보세요</p>
+              <input value={newUrl} size='100'/>
+            </div>}
         </div>
     )
 }
