@@ -12,7 +12,6 @@ export default function User() {
     const [invalidMessage, setInvalidMessage] = useState("")
 
     function handleNameChange(e) {
-        console.log(e.target.value);
         const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
         if (regex.test(e.target.value)) {
           setName(e.target.value);
@@ -38,7 +37,7 @@ export default function User() {
         setChecked(e.target.value);
     }
 
-    const apiKey = process.env.REACT_APP_API_KEY;
+    // const apiKey = process.env.REACT_APP_API_KEY;
     var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
 
     //검사 진행
@@ -131,7 +130,7 @@ export default function User() {
         history.push('/completion/'+seq)
     }
 
-    const progressInstance = <ProgressBar now={now} label={`${now}%`} />
+    const progressInstance = <ProgressBar now={now} label={`${now}%`} className="bar"/>
 
     return(
         <>
