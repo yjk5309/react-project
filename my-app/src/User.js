@@ -9,10 +9,23 @@ export default function User() {
     //이름 성별
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
+    const [invalidMessage, setInvalidMessage] = useState("")
 
-    function handleNameChange(e){
-        setName(e.target.value);
-    }
+    function handleNameChange(e) {
+        console.log(e.target.value);
+        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
+        if (regex.test(e.target.value)) {
+          setName(e.target.value);
+          setInvalidMessage("");
+        } else if (e.target.value === '') {
+          setName("");
+          setInvalidMessage("이름은 필수값입니다");
+        } else {
+          setName("");
+          setInvalidMessage("이름은 한글과 영어만 가능합니다")
+        }
+      }
+    
 
     function handleGender(e){
         setGender(e.target.value);
@@ -26,7 +39,7 @@ export default function User() {
     }
 
     const apiKey = process.env.REACT_APP_API_KEY;
-    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=${apiKey}&q=6`
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
 
     //검사 진행
     const [questionList, setQuestionList] = useState([]);
@@ -99,7 +112,7 @@ export default function User() {
         console.log(formatAnswers);
         var timestamp = new Date().getTime();
         var data = { 
-            "apikey": apiKey,
+            "apikey": '0ae61054823ff25204fc658195732555',
             "qestrnSeq": "6", //검사번호
             "trgetSe": "100209", //일반인
             "name": name,
@@ -127,10 +140,14 @@ export default function User() {
             <div>
                 <h2>직업 가치관 검사</h2>
                 <p>이름<br/>
-                <input type='text' name='name' required onChange={handleNameChange} /></p>
+                <input
+                className={invalidMessage ? "is-invalid " : name ? "is-valid" : ""} 
+                type='text' name='name' required onChange={handleNameChange} value={name} />
+                <br/>
+                <small className="text-danger">{invalidMessage}</small></p>
                 <p>성별<br/>
-                <input type='radio' name='gender' value='100323' onChange={handleGender} />남성
-                <input type='radio' name='gender' value='100324' onChange={handleGender} />여성</p>
+                <input type='radio' name='gender' value='100323' onChange={handleGender} checked={gender === '100323'} />남성
+                <input type='radio' name='gender' value='100324' onChange={handleGender} checked={gender === '100324'} />여성</p>
                 <Button disabled={!name || !gender} onClick={handleNextPage}>검사 시작</Button>
             </div>}
             {page === -1 &&
@@ -142,10 +159,10 @@ export default function User() {
              <h5>{exampleQuestion.question}</h5>
             <div>
                 <label>
-                <input type='radio' name='answer' value='1' onChange={handleCheck} />{exampleQuestion.answer01}
+                <input type='radio' name='answer' value='1' onChange={handleCheck} checked={checked === '1'} />{exampleQuestion.answer01}
                 </label>
                 <label>
-                <input type='radio' name='answer' value='2' onChange={handleCheck} />{exampleQuestion.answer02}
+                <input type='radio' name='answer' value='2' onChange={handleCheck} checked={checked === '2'} />{exampleQuestion.answer02}
                 </label>
             </div>
             </div>

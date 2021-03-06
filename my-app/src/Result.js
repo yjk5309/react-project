@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect, PureComponent } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -340,11 +340,25 @@ export default function Result() {
       
     }
 
-    const [share, setShare] = useState(false);
     let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
     
+    const here = useRef();
     function handleUrl(){
-      setShare(true);
+      if(here.current){
+        console.log('here'+here.current.value);
+        var input = here.current;
+        try {
+          input.select();
+          // returnValue: A Boolean that is false if the command is not supported or enabled.
+          var returnValue = document.execCommand('copy');
+          console.debug(returnValue);
+          if (!returnValue) {
+            throw new Error('copied nothing');
+          }
+        } catch (e) {
+          prompt('Copy to clipboard: Ctrl+C, Enter', input.value);
+        }
+      }
     }
 
     return (
@@ -388,11 +402,10 @@ export default function Result() {
             <br />
             <Link to='/'><Button>다시 검사하기</Button></Link>&nbsp;
             <Button onClick={handleUrl}>공유하기</Button>
-            {share === true &&
-              <div className="share">
-              <p>url을 복사해서 공유해보세요</p>
-              <input value={newUrl} size='100'/>
-            </div>}
+            <div className="share">
+            <small>공유하기 버튼을 누르면 클립보드에 복사됩니다</small><br/>
+              <input value={newUrl} size='100' ref={here}/>
+            </div>
         </div>
     )
 }
