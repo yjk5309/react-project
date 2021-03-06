@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 
-import {Container} from 'react-bootstrap';
+import {Container, Button} from 'react-bootstrap';
 import './Test.css';
 
 import User from './User';
@@ -16,9 +16,18 @@ import {UrlContext} from './Context'
 function Routes() {
     const [url, setUrl] = useState('');
     const urlValue = {url, setUrl};
+    const [day, setDay] = useState(false);
+
+    function handleMode(e){
+      {day===false ? setDay(true) : setDay(false)}
+  }
 
     return (
-    <Container className="container">
+    <div className={day === false ? "container_day":"container_night"}>
+      <div className="left">
+      <Button variant="outline-warning" onClick={handleMode}>
+        {day === false ? "day mode":"night mode"}</Button>
+      </div>
       <Router>
         <Switch>
           <Route exact path="/">
@@ -36,7 +45,7 @@ function Routes() {
           </Route>
         </Switch>
       </Router>
-    </Container>
+    </div>
     )
   }
 
