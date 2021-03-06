@@ -39,7 +39,7 @@ export default function User() {
     }
 
     const apiKey = process.env.REACT_APP_API_KEY;
-    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=${apiKey}&q=6`
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
 
     //검사 진행
     const [questionList, setQuestionList] = useState([]);
@@ -112,7 +112,7 @@ export default function User() {
         console.log(formatAnswers);
         var timestamp = new Date().getTime();
         var data = { 
-            "apikey": apiKey,
+            "apikey": '0ae61054823ff25204fc658195732555',
             "qestrnSeq": "6", //검사번호
             "trgetSe": "100209", //일반인
             "name": name,
