@@ -1,12 +1,24 @@
 .container_night{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     align-content: center;
     text-align: center;
     background-color: rgb(70, 69, 69);
-    color: blanchedalmond;
+    color:ghostwhite;
     width: 100%;
     height: 100%;
 }
 .container_day{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     align-content: center;
     text-align: center;
     width: 100%;
@@ -14,15 +26,15 @@
 }
 
 .div{
-    margin-left: 280px;
+    margin-left: 160px;
 }
 
 .div_chart{
-    margin-left: 370px;
+    margin-left: 250px;
 }
 
 .div_table{
-    margin-left: 200px;
+    margin-left: 100px;
 }
 
 .button{
@@ -35,9 +47,9 @@
     text-align: center;
     width: 800px;
     height: 100px;
-    border: solid 1px rgb(40, 48, 160);
-    background-color: #3373af;
-    color: cornsilk;
+    border: solid 1px rgb(149, 152, 185);
+    background-color: #c0c7e9;
+    color: rgb(42, 70, 70);
     margin-bottom: 30px;
     padding: 20px;
     border-radius: 10px;
@@ -65,4 +77,9 @@
 .left{
     display: flex;
     justify-content: flex-start;
+}
+
+.bar{
+    width: 800px;
+    margin-left: 160px;
 }

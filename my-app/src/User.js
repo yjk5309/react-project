@@ -12,7 +12,6 @@ export default function User() {
     const [invalidMessage, setInvalidMessage] = useState("")
 
     function handleNameChange(e) {
-        console.log(e.target.value);
         const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
         if (regex.test(e.target.value)) {
           setName(e.target.value);
@@ -38,8 +37,8 @@ export default function User() {
         setChecked(e.target.value);
     }
 
-    const apiKey = process.env.REACT_APP_API_KEY;
-    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=${apiKey}&q=6`
+    // const apiKey = process.env.REACT_APP_API_KEY;
+    var apiUrl = `http://www.career.go.kr/inspct/openapi/test/questions?apikey=0ae61054823ff25204fc658195732555&q=6`
 
     //검사 진행
     const [questionList, setQuestionList] = useState([]);
@@ -112,7 +111,7 @@ export default function User() {
         console.log(formatAnswers);
         var timestamp = new Date().getTime();
         var data = { 
-            "apikey": apiKey,
+            "apikey": '0ae61054823ff25204fc658195732555',
             "qestrnSeq": "6", //검사번호
             "trgetSe": "100209", //일반인
             "name": name,
@@ -131,7 +130,7 @@ export default function User() {
         history.push('/completion/'+seq)
     }
 
-    const progressInstance = <ProgressBar now={now} label={`${now}%`} />
+    const progressInstance = <ProgressBar now={now} label={`${now}%`} className="bar"/>
 
     return(
         <>
