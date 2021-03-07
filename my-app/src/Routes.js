@@ -16,17 +16,27 @@ import {UrlContext} from './Context'
 function Routes() {
     const [url, setUrl] = useState('');
     const urlValue = {url, setUrl};
-    const [day, setDay] = useState(false);
+    const [day, setDay] = useState(true);
+
+    let body = document.querySelector("body");
+    body.classList.add("container_day")
 
     function handleMode(e){
       {day===false ? setDay(true) : setDay(false)}
-  }
+      if(day === false){
+        body.classList.remove("container_night")
+        body.classList.add("container_day")
+      }else{
+        body.classList.remove("container_day")
+        body.classList.add("container_night")
+      }
+    }
 
     return (
-    <div className={day === false ? "container_day":"container_night"}>
+      <Container>
       <div className="left">
       <Button variant="outline-warning" onClick={handleMode}>
-        {day === false ? "day mode":"night mode"}</Button>
+        {day === false ? "night mode":"day mode"}</Button>
       </div>
       <Router>
         <Switch>
@@ -45,7 +55,7 @@ function Routes() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Container>
     )
   }
 
